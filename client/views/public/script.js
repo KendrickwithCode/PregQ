@@ -1,12 +1,30 @@
 document.addEventListener('DOMContentLoaded', function () {
     const searchForm = document.getElementById('searchForm');
     const searchInput = document.getElementById('searchInput');
-    const resultsContainer = document.getElementById('SearchResults');
+    const locationInput = document.getElementById('locationInput');
+    const resultsContainer = document.getElementById('resultsContainer');
+    const searchQuery = document.getElementById('searchQuery');
+
+    const paragraph = document.createElement('p');
+    const sourceParagraph = document.createElement('a');
 
     searchForm.addEventListener('submit', async function (event) {
         event.preventDefault();
 
-        const query = searchInput.value.trim() + '+while+pregnant';
+        paragraph.innerText = '';
+        sourceParagraph.textContent = '';
+        searchQuery.textContent = 'You: ' + searchInput.value.trim();
+
+        let query = '';
+        if (locationInput.value !== ''){
+            query = searchInput.value.trim() + '+while+pregnant+' + locationInput.value + '+sources';
+        }
+        else{
+            query = searchInput.value.trim() + '+while+pregnant';
+        }
+
+        query = query.replace(/\s+/g, '+');
+        searchInput.innerText = '';
         console.log(query);
 
         try {
@@ -24,15 +42,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function displayResults(data) {
         // Clear previous results
-        const queryParagraph = document.createElement('h1');
-        queryParagraph.innerText = `You: ${searchInput.value}`;
-        const paragraph = document.createElement('p');
-        const answer_box = data.answer_box.snippet;
-        paragraph.innerText = answer_box;
 
-        resultsContainer.appendChild(queryParagraph);
+        paragraph.innerText = data.answer_box.snippet;
+        sourceParagraph.id = "firstLink";
+        sourceParagraph.textContent = data.answer_box.source;
+        sourceParagraph.href = data.answer_box.link;
+        sourceParagraph.target = '_blank';
+
         resultsContainer.appendChild(paragraph);
-        paragraph.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+        resultsContainer.appendChild(sourceParagraph);
+        sourceParagraph.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
 
         // if (data.organic_results) {
         //     for (let i = 0; i < Math.min(5, data.organic_results.length); i++) {
