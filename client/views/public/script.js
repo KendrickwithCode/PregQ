@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function displayResults(data) {
-        // Clear previous results
 
         paragraph.innerText = data.answer_box.snippet;
         sourceParagraph.id = "firstLink";
@@ -52,19 +51,5 @@ document.addEventListener('DOMContentLoaded', function () {
         resultsContainer.appendChild(paragraph);
         resultsContainer.appendChild(sourceParagraph);
         sourceParagraph.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
-
-        // if (data.organic_results) {
-        //     for (let i = 0; i < Math.min(5, data.organic_results.length); i++) {
-        //         const result = data.organic_results[i];
-        //         const title = result.title;
-
-        //         // Create a new paragraph element for each result
-        //         const paragraph = document.createElement('p');
-        //         paragraph.innerText = title;
-
-        //         // Append the paragraph to the results container
-        //         resultsContainer.appendChild(paragraph);
-        //     }
-        // }
     }
 });
